@@ -102,8 +102,8 @@ void diagonaleHD(char grille[N][N], char mot[N], int x, int y){
 	}
 }
 
-//Permet d'insérer un mot en diagonale vers le bas à gauche; nécessite le nom de la grille, le mot à insérer, et les coordonnées de la premiere lettre//
-void diagonaleHG(char grille[N][N], char mot[N], int x, int y){
+//Permet d'insérer un mot en diagonale vers le haut à gauche; nécessite le nom de la grille, le mot à insérer, et les coordonnées de la premiere lettre//
+void diagonaleHG(char grille[N][N],char mot[N],int x,int y){
 	int i;
 	for(i=0;i<nChaineLg(mot); i++){
 		grille[x][y] = mot[i];
@@ -112,84 +112,132 @@ void diagonaleHG(char grille[N][N], char mot[N], int x, int y){
 	}
 }
 
-//Verifie si le mot peut etre placer à une position et retourne les coordonnées ainsi que la direction du mot dans la grille//
-void verifier(char grille[N][N],char mot[N],int *Direct,int *xcoord,int *ycoord){
+//Verifie si le mot peut etre placer dans la grille//
+void verifier(char grille[N][N],char mot[N], int *direct, int *xcoord, int *ycoord){
 	int cpt = 0;
-	int i,j;
-	
+	int verif = 0;
+	int i,j,k,l;
+	int leng = nChaineLg(mot);
 	for(i=0; i<N ; i++){
 		for(j=0; j<N; j++){
-			for(cpt=0;cpt<nChaineLg(mot); cpt++){ // Vertical Bas 
-				if(mot[cpt]==grille[i+cpt][j]||grille[i+cpt][j]==' '){
-					*Direct =4;
-					*xcoord =j;
-					*ycoord =i;
+			
+			if(leng+j < N){
+				for(k=j; k<leng ; k++){
+					if(grille[i][k] != ' ' && grille[i][k] != mot[cpt]){
+						verif++;
+					}
+					cpt++;
 				}
-				else break;
-			}
-			for(cpt=0;cpt<nChaineLg(mot); cpt++){ // Vertical Haut
-				if(mot[cpt]==grille[i-cpt][j]||mot[cpt]==' '){
-					*Direct =3;
-					*xcoord =j;
-					*ycoord =i;
-				}
-				else break;
-			}
-			for(cpt=0;cpt<nChaineLg(mot); cpt++){ // Horizontale Droit
-				if(mot[cpt]==grille[i][j+cpt]||mot[cpt]==' '){
-					*Direct =1;
-					*xcoord =j;
-					*ycoord =i;
-				}
-				else break;
-			}
-			for(cpt=0;cpt<nChaineLg(mot); cpt++){//Horizontale gauche
-				if(mot[cpt]==grille[i][j-cpt]||mot[cpt]==' '){
-					*Direct=2;
-					*xcoord =j;
-					*ycoord =i;
-				}
-				else break;	
-			}
-			for(cpt=0;cpt<nChaineLg(mot); cpt++){// Diagonale HG
-				if(mot[cpt]==grille[i-cpt][j-cpt]||mot[cpt]==' '){
-					*Direct=5;
-					*xcoord =j;
-					*ycoord =i;
-				}
-				else break;	
-			}
-			for(cpt=0;cpt<nChaineLg(mot); cpt++){// Diangonale BD
-				if(mot[cpt]==grille[i+cpt][j+cpt]||mot[cpt]==' '){
-					*Direct=6;
-					*xcoord =j;
-					*ycoord =i;
+				if(verif == 0){
+					*direct=1;
+					*ycoord=i;
+					*xcoord=j;
 				}	
-				else break;
 			}
-			for(cpt=0;cpt<nChaineLg(mot); cpt++){// Diagonale HD
-				if(mot[cpt]==grille[i-cpt][j+cpt]||mot[cpt]==' '){
-					*Direct= 7;
-					*xcoord =j;
-					*ycoord =i;
+
+			else if(j-leng > 0){
+				for(k=j; k<leng ; k++){
+					if(grille[i][k] != ' ' && grille[i][k] != mot[cpt]){
+						verif++;
+					}
+					cpt++;
 				}
-				else break;	
-			}
-			for(cpt=0;cpt<nChaineLg(mot); cpt++){// Diagonale BG
-				if(mot[cpt]==grille[i+cpt][j-cpt]||mot[cpt]==' '){
-					*Direct =8;
-					*xcoord =j;
-					*ycoord =i;
+				if(verif == 0){
+					*direct=2;
+					*ycoord=i;
+					*xcoord=j;
 				}
-				else break;	 
 			}
+
+			else if(i-leng > 0){
+				for(k=j; k<leng ; k++){
+					if(grille[i][k] != ' ' && grille[i][k] != mot[cpt]){
+						verif++;
+					}
+					cpt++;
+				}
+				if(verif == 0){
+					*direct=3;
+					*ycoord=i;
+					*xcoord=j;
+				}
+			}
+
+			else if(leng+i < N){
+				for(k=j; k<leng ; k++){
+					if(grille[i][k] != ' ' && grille[i][k] != mot[cpt]){
+						verif++;
+					}
+					cpt++;
+				}
+				if(verif == 0){
+					*direct=4;
+					*ycoord=i;
+					*xcoord=j;
+				}
+			}
+
+			else if(grille[i-leng][j-leng]==' '){
+				for(k=j; k<leng ; k++){
+					if(grille[i][k] != ' ' && grille[i][k] != mot[cpt]){
+						verif++;
+					}
+					cpt++;
+				}
+				if(verif == 0){
+					*direct=5;
+					*ycoord=i;
+					*xcoord=j;
+				}
+			}
+
+			else if(grille[i+leng][j+leng] ==' '){
+				for(k=j; k<leng ; k++){
+					if(grille[i][k] != ' ' && grille[i][k] != mot[cpt]){
+						verif++;
+					}
+					cpt++;
+				}
+				if(verif == 0){
+					*direct=6;
+					*ycoord=i;
+					*xcoord=j;
+				}
+			}
+
+			else if(grille[i-leng][j+leng]==' '){
+				for(k=j; k<leng ; k++){
+					if(grille[i][k] != ' ' && grille[i][k] != mot[cpt]){
+						verif++;
+					}
+					cpt++;
+				}
+				if(verif == 0){
+					*direct=7;
+					*ycoord=i;
+					*xcoord=j;
+				}
+			}
+
+			else if(grille[i+leng][j-leng]==' '){
+				for(k=j; k<leng ; k++){
+					if(grille[i][k] != ' ' && grille[i][k] != mot[cpt]){
+						verif++;
+					}
+					cpt++;
+				}
+				if(verif == 0){
+					*direct=8;
+					*ycoord=i;
+					*xcoord=j;
+				}
+			}	
 		}
 	}
 }
 
 //Place les mots dans la grille celon les indications de la fonction <verifier>//
 void placer(char mot[N], char grille[N][N]){
-	;
 	int x,y,direct;
 	verifier(grille,mot,&direct,&x,&y);
 	switch(direct)
@@ -201,7 +249,7 @@ void placer(char mot[N], char grille[N][N]){
 			case 6: diagonaleBD(grille, mot, x, y); break;
 			case 7: diagonaleHD(grille, mot, x, y); break;
 			case 8:	diagonaleBG(grille, mot, x, y);break;
-			default: printf("Erreur: votre choix doit �tre compris entre 1 et 8\n");
+			default: ;//Ne rien faire//
 		}
 }
 
