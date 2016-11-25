@@ -112,40 +112,114 @@ void diagonaleHG(char grille[N][N], char mot[N], int x, int y){
 	}
 }
 
+//Verifie si le mot peut etre placer à une position et retourne les coordonnées ainsi que la direction du mot dans la grille//
+void verifier(char grille[N][N],char mot[N],int *Direct,int *xcoord,int *ycoord){
+	int cpt = 0;
+	int i,j;
+	
+	for(i=0; i<N ; i++){
+		for(j=0; j<N; j++){
+			for(cpt=0;cpt<nChaineLg(mot); cpt++){ // Vertical Bas 
+				if(mot[cpt]==grille[i+cpt][j]||grille[i+cpt][j]==' '){
+					*Direct =4;
+					*xcoord =j;
+					*ycoord =i;
+				}
+				else break;
+			}
+			for(cpt=0;cpt<nChaineLg(mot); cpt++){ // Vertical Haut
+				if(mot[cpt]==grille[i-cpt][j]||mot[cpt]==' '){
+					*Direct =3;
+					*xcoord =j;
+					*ycoord =i;
+				}
+				else break;
+			}
+			for(cpt=0;cpt<nChaineLg(mot); cpt++){ // Horizontale Droit
+				if(mot[cpt]==grille[i][j+cpt]||mot[cpt]==' '){
+					*Direct =1;
+					*xcoord =j;
+					*ycoord =i;
+				}
+				else break;
+			}
+			for(cpt=0;cpt<nChaineLg(mot); cpt++){//Horizontale gauche
+				if(mot[cpt]==grille[i][j-cpt]||mot[cpt]==' '){
+					*Direct=2;
+					*xcoord =j;
+					*ycoord =i;
+				}
+				else break;	
+			}
+			for(cpt=0;cpt<nChaineLg(mot); cpt++){// Diagonale HG
+				if(mot[cpt]==grille[i-cpt][j-cpt]||mot[cpt]==' '){
+					*Direct=5;
+					*xcoord =j;
+					*ycoord =i;
+				}
+				else break;	
+			}
+			for(cpt=0;cpt<nChaineLg(mot); cpt++){// Diangonale BD
+				if(mot[cpt]==grille[i+cpt][j+cpt]||mot[cpt]==' '){
+					*Direct=6;
+					*xcoord =j;
+					*ycoord =i;
+				}	
+				else break;
+			}
+			for(cpt=0;cpt<nChaineLg(mot); cpt++){// Diagonale HD
+				if(mot[cpt]==grille[i-cpt][j+cpt]||mot[cpt]==' '){
+					*Direct= 7;
+					*xcoord =j;
+					*ycoord =i;
+				}
+				else break;	
+			}
+			for(cpt=0;cpt<nChaineLg(mot); cpt++){// Diagonale BG
+				if(mot[cpt]==grille[i+cpt][j-cpt]||mot[cpt]==' '){
+					*Direct =8;
+					*xcoord =j;
+					*ycoord =i;
+				}
+				else break;	 
+			}
+		}
+	}
+}
+
+//Place les mots dans la grille celon les indications de la fonction <verifier>//
+void placer(char mot[N], char grille[N][N]){
+	;
+	int x,y,direct;
+	verifier(grille,mot,&direct,&x,&y);
+	switch(direct)
+		{	case 1: horizontaleD(grille,mot, x,y); break;
+			case 2: horizontaleG(grille,mot, x, y); break;
+			case 3: verticaleH(grille, mot,  x,  y); break;
+			case 4: verticaleB(grille, mot, x, y); break;
+			case 5: diagonaleHG(grille, mot, x, y); break;
+			case 6: diagonaleBD(grille, mot, x, y); break;
+			case 7: diagonaleHD(grille, mot, x, y); break;
+			case 8:	diagonaleBG(grille, mot, x, y);break;
+			default: printf("Erreur: votre choix doit �tre compris entre 1 et 8\n");
+		}
+}
+
 //Permet de jouer au jeu//
 void jouer(int theme){
-	char grille[N][N];
-	char mot1[N];
-	char mot2[N];
-	char mot3[N];
-	char mot4[N];
-	char mot5[N];
-	char mot6[N];
-	char a[4];
-	char adresse[50];
-	int i = 0;
+	char grille[N][N];	//Grille de mots-meles//
+	char a[4];		//Mot pour la fin de partie//
+	char adresse[50];	//Adresse du fichier contenant la liste de mot//
+	char mot[N];		//Mot courant de la liste//
+	int i = 0;		//Indice//
 
-	strcpy(mot1,"MERCI");
-	strcpy(mot2,"CHIEN");
-	strcpy(mot3,"HIMALAYA");
-	strcpy(mot4,"CARAPACE");
-	strcpy(mot5,"CHOUX");
-	strcpy(mot6,"PURGE");
+	init_grille(grille);	//Initialise la grille avec des espaces//
 	
-	init_grille(grille);
 	
-	diagonaleBD(grille, mot1, 0, 0);
-	horizontaleD(grille, mot2, 3, 3);
-	verticaleB(grille, mot3, 3, 4);
-	horizontaleD(grille, mot4, 6, 3);
-	verticaleB(grille, mot5, 6, 9);
-	verticaleB(grille, mot6, 2, 10);
-	
-	completer_grille(grille);
 	while(strcmp(a, "fini") != 0){
 		printf("\nVoici les mots à trouver: \n");
 		printf("-------------------------\n");
-		switch(theme){
+		switch(theme){	//Permet de selectionner le fichier à ouvrir celon le choix du joueur//
 			case 1: strcpy(adresse, "ELECTIONS.txt"); break;
 			case 2: strcpy(adresse, "EAU.txt"); break;
 			case 3: strcpy(adresse, "CAPITALES.txt"); break;
@@ -153,26 +227,27 @@ void jouer(int theme){
 		}
 
 		FILE * fichier;
-     
-		// récupération de l'adresse du fichier texte à traiter
 		
-		char mot[N];
-	 	// ouverture du fichier en mode lecture
+		
 		fichier=fopen(adresse,"r");
-			 
-			// traitement
-			do{ // lecture du mot 
-				for(i=0; i<10; i++){
+			do{ //Parcours le fichier//
+				for(i=0; i<10; i++){	//Permet de mettre dix mot par ligne pour la lisibilite//
 					if(feof(fichier) == 0){
-						fscanf(fichier, "%s", mot);
-						printf("%s  ", mot);
+						fscanf(fichier, "%s", mot);	//Selectionne un mot dans la liste//
+						printf("%s  ", mot);		//Affiche le mot dans la liste de mot a trouver pour le joueur//
+						placer(mot, grille);		//Place le mot dans la grille//
 					}
 				}
 				printf("\n");	
 			}while(!feof(fichier));
+
 		fclose (fichier);
+
+		//completer_grille(grille);//
+
 		printf("\n");	
 		afficher(grille);
+
 		printf("Entrez <fini> une fois la partie terminée => ");
 		scanf("%s", a);
 	}
