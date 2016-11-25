@@ -1,4 +1,4 @@
-int verifier(char grille[N][N],char mot[N],int *Direct,int *xcoord,int *ycoord){
+void verifier(char grille[N][N],char mot[N],int *Direct,int *xcoord,int *ycoord){
 	int cpt = 0;
 	int i,j;
 	
