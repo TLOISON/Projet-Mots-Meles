@@ -118,120 +118,31 @@ void verifier(char grille[N][N],char mot[N], int *direct, int *xcoord, int *ycoo
 	int verif = 0;
 	int i,j,k,l;
 	int leng = nChaineLg(mot);
-	for(i=0; i<N ; i++){
-		for(j=0; j<N; j++){
+	for(i=0; i<N+1 ; i++){
+		for(j=0; j<N+1; j++){
 			
-			if(leng+j < N){
-				for(k=j; k<leng ; k++){
-					if(grille[i][k] != ' ' && grille[i][k] != mot[cpt]){
-						verif++;
-					}
+			for(k=j; k<leng ; k++){
+				if(grille[i][k] != ' ' && grille[i][k] != mot[cpt]){
+					verif++;
 					cpt++;
+					if(verif==leng){
+						*direct=1;
+						*ycoord=i;
+						*xcoord=j;
+					}
 				}
-				if(verif == 0){
-					*direct=1;
-					*ycoord=i;
-					*xcoord=j;
+			}
+			for(k=i; k<leng ; k++){
+				if(grille[i][k] != ' ' && grille[i][k] != mot[cpt]){
+					verif++;
+					cpt++;
+					if(verif==leng){
+						*direct=4;
+						*ycoord=i;
+						*xcoord=j;
+					}
 				}	
 			}
-
-			else if(j-leng > 0){
-				for(k=j; k<leng ; k++){
-					if(grille[i][k] != ' ' && grille[i][k] != mot[cpt]){
-						verif++;
-					}
-					cpt++;
-				}
-				if(verif == 0){
-					*direct=2;
-					*ycoord=i;
-					*xcoord=j;
-				}
-			}
-
-			else if(i-leng > 0){
-				for(k=j; k<leng ; k++){
-					if(grille[i][k] != ' ' && grille[i][k] != mot[cpt]){
-						verif++;
-					}
-					cpt++;
-				}
-				if(verif == 0){
-					*direct=3;
-					*ycoord=i;
-					*xcoord=j;
-				}
-			}
-
-			else if(leng+i < N){
-				for(k=j; k<leng ; k++){
-					if(grille[i][k] != ' ' && grille[i][k] != mot[cpt]){
-						verif++;
-					}
-					cpt++;
-				}
-				if(verif == 0){
-					*direct=4;
-					*ycoord=i;
-					*xcoord=j;
-				}
-			}
-
-			else if(grille[i-leng][j-leng]==' '){
-				for(k=j; k<leng ; k++){
-					if(grille[i][k] != ' ' && grille[i][k] != mot[cpt]){
-						verif++;
-					}
-					cpt++;
-				}
-				if(verif == 0){
-					*direct=5;
-					*ycoord=i;
-					*xcoord=j;
-				}
-			}
-
-			else if(grille[i+leng][j+leng] ==' '){
-				for(k=j; k<leng ; k++){
-					if(grille[i][k] != ' ' && grille[i][k] != mot[cpt]){
-						verif++;
-					}
-					cpt++;
-				}
-				if(verif == 0){
-					*direct=6;
-					*ycoord=i;
-					*xcoord=j;
-				}
-			}
-
-			else if(grille[i-leng][j+leng]==' '){
-				for(k=j; k<leng ; k++){
-					if(grille[i][k] != ' ' && grille[i][k] != mot[cpt]){
-						verif++;
-					}
-					cpt++;
-				}
-				if(verif == 0){
-					*direct=7;
-					*ycoord=i;
-					*xcoord=j;
-				}
-			}
-
-			else if(grille[i+leng][j-leng]==' '){
-				for(k=j; k<leng ; k++){
-					if(grille[i][k] != ' ' && grille[i][k] != mot[cpt]){
-						verif++;
-					}
-					cpt++;
-				}
-				if(verif == 0){
-					*direct=8;
-					*ycoord=i;
-					*xcoord=j;
-				}
-			}	
 		}
 	}
 }
