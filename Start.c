@@ -1,6 +1,7 @@
 #include "Outil.h"
 #define N 20
 
+//nettoie l'écran//
 void clrscr()
 {
     system("clear");
@@ -327,8 +328,7 @@ void jouer(int theme){
 
 
 	while(strcmp(a, "fini") != 0){
-		printf("\nVoici les mots a trouver: \n");
-		printf("-------------------------\n");
+
 		switch(theme){	//Permet de selectionner le fichier a ouvrir celon le choix du joueur//
 			case 1: strcpy(adresse, "ELECTIONS.txt"); break;
 			case 2: strcpy(adresse, "EAU.txt"); break;
@@ -382,26 +382,16 @@ void jouer(int theme){
 
 		//completer_grille(grille);	//Comble les trous de la grille par des lettres au hasard//
 
-		printf("\n");
-		afficher(grille);
-		printf("\n");
-		/*for(i=0;i<50;i++){
-		    printf("\n");
-		    for(cptr_j=0;cptr_j<10 && liste[i][cptr_j]!='\0' ;cptr_j++){
-		        printf("%c",liste[i][cptr_j]);
-		            }
-		}*/
 		while(trouve!= 1){
 		    clrscr();
+		    printf("\nVoici les mots a trouver: \n");
+            printf("-------------------------\n");
 		     for(i=0;i<50;i++){
 		            printf("\n");
 		            for(cptr_j=0;cptr_j<10 && liste[i][cptr_j]!='\0';cptr_j++){
-				if (liste[i][cptr_j] == '\n'){
-					printf(" ");
-				}
-		                else {
-					printf("%c",liste[i][cptr_j]);
-				}
+
+                        printf("%c",liste[i][cptr_j]);
+
 		            }
 		    }
 		    afficher(grille);
@@ -409,7 +399,7 @@ void jouer(int theme){
 		    num_mot=indice/5;
 		    if (select == 1){
 		        supprimer_mot(liste,num_mot);
-		      
+
 		    }
 		    verif=0;
 		    for(i=0;i<50;i++){
@@ -426,8 +416,6 @@ void jouer(int theme){
 		}
 
 
-            //printf("%i",num_mot);
-			//printf("gg vous avez trouvé un mot");
 
 
 
@@ -439,14 +427,16 @@ void jouer(int theme){
 //Permet a  l'utilisateur de selectionner le theme de la grille//
 void select_theme(){
 	int choix = 0;
-	printf("\nSelectionnez un theme parmi ceux proposes: \n");
-	printf("-----------------------------------------\n");
+	printf("\n		+-------------------------------------------------------+");
+    printf("\n		|	Selectionnez un thème parmi ceux proposes:       |\n");
 
 	while(choix<=0 || choix>4){
-		printf("1 - Elections \n");
-		printf("2 - L eau dans tout ses etats \n");
-		printf("3 - Capitales du monde \n");
-		printf("4 - Harry Potter \n");
+		printf("		|                                               	|\n");
+		printf("		|		1 - Elections                           |\n");
+		printf("		|		2 - L eau dans tout ses etats           |\n");
+		printf("		|		3 - Capitales du monde                  |\n");
+		printf("		|		4 - Harry Potter                        |\n");
+        printf("		+-------------------------------------------------------+\n");
 		printf("Votre choix : ");
 		scanf("%i", &choix);
 
@@ -468,17 +458,35 @@ int main(){
 
 // Affichage du menu et saisie du choix //
 	do
-	{	printf("\nMenu :\n");
-		printf(" 1 - Selection du theme\n");
-		printf(" 2 - Jouer\n");
-		printf(" 3 - Quitter\n");
+	{	printf("\n\n\n\n\n\n\n\n\n");
+		printf("	   #   #   ###   #####   ####       #   #  #####  #      #####   ####\n");
+		printf("	   ## ##  #   #    #    #           ## ##  #      #      #      #\n");
+		printf("	   # # #  #   #    #    #           # # #  #      #      #      #\n");
+		printf("	   #   #  #   #    #     ###   ###  #   #  ####   #      ####    ###\n");
+		printf("	   #   #  #   #    #        #       #   #  #      #      #          #\n");
+		printf("	   #   #  #   #    #        #       #   #  #      #      #          #\n");
+		printf("	   #   #   ###     #    ####        #   #  #####  #####  #####  ####\n");
+		printf("\n			+---------------------------------------+\n");
+		printf("			|					|");
+		printf("\n			|		Menu :			|\n");
+		printf("			|					|\n");
+		printf("			|	1 - Selection du theme		|\n");
+		printf("			|	2 - Regles du jeux     		|\n");
+		printf("			|	3 - Quitter           		|\n");
+		printf("			|					|");
+        printf("\n			+---------------------------------------+\n");
 		printf("Votre choix : ");
 		scanf("%i",&choix);
 
 // Traitement du choix de l'utilisateur //
 		switch(choix)
 		{	case 1: select_theme();	break;
-			case 2: printf("pour jouer, merci de selectionner un theme. \n"); break;
+			case 2: printf("\n			Regles du jeu de mots meles: \n");
+					printf("\n			Les mots à trouver s'affichent sous la grille.");
+					printf("\n			Une même lettre peut être utilisée dans plusieurs mots à la fois.");
+					printf("\n			Les mots sont écrits de gauche a droite et peuvent être disposés:");
+					printf("\n			horizontalement, verticalement, et en diagonale .");
+                    printf("\n			Une même lettre peut être utilisée dans plusieurs mots à la fois. \n"); break;
 			case 3: break;
 			default: printf("Erreur: votre choix doit etre compris entre 1 et 3\n");
 		}
