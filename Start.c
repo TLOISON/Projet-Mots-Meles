@@ -1,12 +1,16 @@
 #include "Outil.h"
 #define N 20
 
+void clrscr()
+{
+    system("clear");
+}
 //Initialise la grille avec des espaces//
-void init_grille(char grille[N][N], int max_i,int max_j){
+void init_grille(char grille[N][N], int max_i,int max_j ,char c ){
 	int i, j;
 	for(i=0; i<max_i; i++){
 		for(j=0; j<max_j ; j++){
-			char lettre = '.';
+			char lettre = c;
 			grille[i][j] = lettre;
 		}
 	}
@@ -28,7 +32,7 @@ void completer_grille(char grille[N][N]){
 //Affiche la grille de Mots-MÃ©lÃ©s//
 void afficher(char grille[N][N]){
 	int i, j;
-
+	printf("\n");
 	for(i=-1; i<N; i++){
             if (i==-1){
                 printf("X  ");
@@ -58,7 +62,7 @@ void afficher(char grille[N][N]){
 
         printf("\n");
 	}
-	printf("\n");
+	printf("\n \n");
 
 
 }
@@ -154,13 +158,13 @@ void placer(char mot[N], char grille[N][N], int x, int y, int direct){
 		}
 }
 
-//Verifie si le mot peut etre placer dans la grille//
+//Verifie si le mot peut etre placer dans la gril#include <conio.h>le//
 int verifier(char grille[N][N],char mot[N],int *x_start,int *y_start,int *x_end,int *y_end){
 	int leng = nChaineLg(mot);
 	int i, j, k, l	;
 	int direct, possible;
 
-	direct=1;//rand()%3 + 1;
+	direct=rand()%3 + 1;
 
 	if(direct == 1){	//Cas por horizontale vers la droite//
 		for(i=0; i<N+1 ; i++){
@@ -173,7 +177,7 @@ int verifier(char grille[N][N],char mot[N],int *x_start,int *y_start,int *x_end,
 						}
 					}
 					if(possible == 1){
-                            *x_start=j;
+                            				*x_start=j;
 							*y_start=i;
 							*x_end=j+(leng-1);
 							*y_end=i;
@@ -204,7 +208,7 @@ int verifier(char grille[N][N],char mot[N],int *x_start,int *y_start,int *x_end,
 		}
 	}*/
 
-	/*else if(direct == 2){	//Cas pour verticale vers le bas//
+	else if(direct == 2){	//Cas pour verticale vers le bas//
 		for(i=0; i<N+1 ; i++){
 			for(j=0; j<N+1; j++){
 				possible = 1;
@@ -215,10 +219,10 @@ int verifier(char grille[N][N],char mot[N],int *x_start,int *y_start,int *x_end,
 						}
 					}
 					if(possible == 1){
-                        *x_start=j;
-                        *y_start=i;
-                        *x_end=j;
-                        *y_end=i+leng;
+                        			*x_start=j;
+                        			*y_start=i;
+                        			*x_end=j;
+                        			*y_end=i+(leng-1);
 						placer(mot, grille, i, j, direct);
 						return 1;
 					}
@@ -226,8 +230,7 @@ int verifier(char grille[N][N],char mot[N],int *x_start,int *y_start,int *x_end,
 			}
 		}
 	}
-
-		else if(direct == 6){	//Cas pour verticale vers le haut//
+		/*else if(direct == 6){	//Cas pour verticale vers le haut//
 		for(i=0; i<N+1 ; i++){
 			for(j=0; j<N+1; j++){
 				possible = 1;
@@ -244,8 +247,7 @@ int verifier(char grille[N][N],char mot[N],int *x_start,int *y_start,int *x_end,
 				}
 			}
 		}
-	}
-
+	}*/
 	else if(direct == 3){	//Cas pour diagonale vers le bas a droite//
 		for(i=0; i<N+1 ; i++){
 			for(j=0; j<N+1; j++){
@@ -257,13 +259,17 @@ int verifier(char grille[N][N],char mot[N],int *x_start,int *y_start,int *x_end,
 						}
 					}
 					if(possible == 1){
+						*x_start=j;
+                        			*y_start=i;
+                        			*x_end=j+(leng-1);
+                        			*y_end=i+(leng-1);
 						placer(mot, grille, i, j, direct);
 						return 1;
 					}
 				}
 			}
 		}
-	}*/
+	}
 }
 
 int selection(char grille[N][N],int coord[500],int *i){
@@ -286,15 +292,15 @@ int selection(char grille[N][N],int coord[500],int *i){
 
 		}
 		 else{
-            *i++;
-        }
+            		*i++;
+        	}
 	}
 }
 void supprimer_mot(char liste[50][10],int rang){
 int i=0;
 int j=0;
 for(j=0;j<10;j++){
-    liste[rang][j]='.';
+    liste[rang][j]='\0';
 }
 
 }
@@ -316,8 +322,8 @@ void jouer(int theme){
 	int indice ,num_mot;
 	int verif=0;
 	int trouve=0;
-	init_grille(grille,N,N);	//Initialise la grille avec des points//
-	init_grille(liste,50,10);
+	init_grille(grille,N,N,'.');	//Initialise la grille avec des points//
+	init_grille(liste,50,10,'\0');
 
 
 	while(strcmp(a, "fini") != 0){
@@ -340,7 +346,7 @@ void jouer(int theme){
 						fscanf(fichier, "%s", mot);			//Selectionne un mot dans la liste (fichier.txt)//
 						tmp = verifier(grille, mot,&x_start,&y_start,&x_end,&y_end);		//Place le mot dans la grille//
 						if(tmp == 1){
-                            coord[cpt]=x_start;
+                           				coord[cpt]=x_start;
 							cpt++;
 							coord[cpt]=y_start;
 							cpt++;
@@ -351,14 +357,14 @@ void jouer(int theme){
 							coord[cpt]=-1;
 							cpt++;
 
-                            for(cptr_j=0;cptr_j<10;cptr_j++){
+							    for(cptr_j=0;cptr_j<10;cptr_j++){
 
-                                liste[cptr_i][cptr_j]=mot[cptr_j];
-                                if (liste[cptr_i][cptr_j]== '\0'){
-                                    break;
-                                }
-                            }
-                            cptr_i++;
+								liste[cptr_i][cptr_j]=mot[cptr_j];
+								if (liste[cptr_i][cptr_j]== '\0'){
+								    break;
+								}
+							    }
+							    cptr_i++;
 							printf("%s  ", mot);//Affiche le mot dans la liste de mot a trouver//
 
 
@@ -378,37 +384,46 @@ void jouer(int theme){
 
 		printf("\n");
 		afficher(grille);
-        for(i=0;i<50;i++){
-            printf("\n");
-            for(cptr_j=0;cptr_j<10 && liste[cptr_i][cptr_j]!='.' ;cptr_j++){
-                printf("%c",liste[i][cptr_j]);
-                    }
-        }
-        while(trouve!= 1){
-            select=selection(grille,coord,&indice);
-            num_mot=indice/5;
-            if (select == 1){
-                supprimer_mot(liste,num_mot);
-                for(i=0;i<50;i++){
-                    printf("\n");
-                    for(cptr_j=0;cptr_j<10;cptr_j++){
-                        printf("%c",liste[i][cptr_j]);
-                    }
-                }
-            }
-            verif=0;
-            for(i=0;i<50;i++){
-                    for(cptr_j=0;cptr_j<10;cptr_j++){
-                        if(liste[i][cptr_j]=='.'){
-                            verif++;
-                        }
-                        if(verif==500){
-                            printf("vous avez gagné");
-                            trouve=1;
-                        }
-                    }
-            }
-        }
+		printf("\n");
+		/*for(i=0;i<50;i++){
+		    printf("\n");
+		    for(cptr_j=0;cptr_j<10 && liste[i][cptr_j]!='\0' ;cptr_j++){
+		        printf("%c",liste[i][cptr_j]);
+		            }
+		}*/
+		while(trouve!= 1){
+		    clrscr();
+		     for(i=0;i<50;i++){
+		            printf("\n");
+		            for(cptr_j=0;cptr_j<10 && liste[i][cptr_j]!='\0';cptr_j++){
+				if (liste[i][cptr_j] == '\n'){
+					printf(" ");
+				}
+		                else {
+					printf("%c",liste[i][cptr_j]);
+				}
+		            }
+		    }
+		    afficher(grille);
+		    select=selection(grille,coord,&indice);
+		    num_mot=indice/5;
+		    if (select == 1){
+		        supprimer_mot(liste,num_mot);
+		      
+		    }
+		    verif=0;
+		    for(i=0;i<50;i++){
+		            for(cptr_j=0;cptr_j<10;cptr_j++){
+		                if(liste[i][cptr_j]=='\0'){
+		                    verif++;
+		                }
+		                if(verif==500){
+		                    printf("vous avez gagné");
+		                    trouve=1;
+		                }
+		            }
+		    }
+		}
 
 
             //printf("%i",num_mot);
