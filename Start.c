@@ -7,12 +7,21 @@ void clrscr()
     system("clear");
 }
 //Initialise la grille avec des espaces//
-void init_grille(char grille[N][N], int max_i,int max_j ,char c ){
+void init_grille(char grille[N][N], int max_i,int max_j){
 	int i, j;
 	for(i=0; i<max_i; i++){
 		for(j=0; j<max_j ; j++){
-			char lettre = c;
+			char lettre = '.';
 			grille[i][j] = lettre;
+		}
+	}
+}
+void init_liste(char liste[50][10]){
+	int i,j;
+	for(i=0; i<50; i++){
+		for(j=0; j<10 ; j++){
+			char lettre = '\0';
+			liste[i][j] = lettre;
 		}
 	}
 }
@@ -36,12 +45,12 @@ void afficher(char grille[N][N]){
 	printf("\n");
 	for(i=-1; i<N; i++){
             if (i==-1){
-                printf("X  ");
+                printf("  ");
             }
-            else if(i<10){
+            else if(i<10 && i!=-1){
                 printf("%i  ",i);
             }
-            else{
+            else if (i>=10){
                 printf("%i ",i);
             }
 		for(j=0; j<N; j++){
@@ -63,7 +72,7 @@ void afficher(char grille[N][N]){
 
         printf("\n");
 	}
-	printf("\n \n");
+	printf("\n");
 
 
 }
@@ -323,8 +332,8 @@ void jouer(int theme){
 	int indice ,num_mot;
 	int verif=0;
 	int trouve=0;
-	init_grille(grille,N,N,'.');	//Initialise la grille avec des points//
-	init_grille(liste,50,10,'\0');
+	init_grille(grille,N,N);	//Initialise la grille avec des points//
+	init_liste(liste);
 
 
 	while(strcmp(a, "fini") != 0){
@@ -359,13 +368,12 @@ void jouer(int theme){
 
 							    for(cptr_j=0;cptr_j<10;cptr_j++){
 
-								liste[cptr_i][cptr_j]=mot[cptr_j];
-								if (liste[cptr_i][cptr_j]== '\0'){
-								    break;
-								}
+									liste[cptr_i][cptr_j]=mot[cptr_j];
+									if (liste[cptr_i][cptr_j]== '\0'){
+										break;
+									}
 							    }
 							    cptr_i++;
-							printf("%s  ", mot);//Affiche le mot dans la liste de mot a trouver//
 
 
 
@@ -387,13 +395,18 @@ void jouer(int theme){
 		    printf("\nVoici les mots a trouver: \n");
             printf("-------------------------\n");
 		     for(i=0;i<50;i++){
-		            printf("\n");
-		            for(cptr_j=0;cptr_j<10 && liste[i][cptr_j]!='\0';cptr_j++){
-
-                        printf("%c",liste[i][cptr_j]);
-
+		            //printf("\n");
+		            for(cptr_j=0;cptr_j<10 ;cptr_j++){
+		            	mot[cptr_j]=liste[i][cptr_j];
+                        //printf("%c",liste[i][cptr_j]);
+                        
 		            }
+		            if (i==10 || i==20 ||i==30||i==40||i==50){
+		            	printf("\n");
+		            }
+		            printf("%s ",mot);
 		    }
+		    printf("\n");
 		    afficher(grille);
 		    select=selection(grille,coord,&indice);
 		    num_mot=indice/5;
@@ -408,7 +421,7 @@ void jouer(int theme){
 		                    verif++;
 		                }
 		                if(verif==500){
-		                    printf("vous avez gagné");
+		                    printf("vous avez gagné!! \n");
 		                    trouve=1;
 		                }
 		            }
